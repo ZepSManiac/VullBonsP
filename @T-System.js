@@ -126,7 +126,7 @@ global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse()
 //=================================================//
 const store = makeInMemoryStore({
     logger: pino().child({
-        level: 'silent',
+        level: 'fatal',
         stream: 'store'
     })
 })
@@ -191,10 +191,9 @@ async function Botstarted() {
 //==============================================================//
     const tganz = WADefault({
         logger: pino({
-        level: 'silent', // Hening Masalah Console - QR Code
+        level: 'fatal', // Hening Masalah Console - QR Code
         }),
-        // browser: ['© TestGanz', 'Firefox', '2.0.2.3'],
-        browser: Browsers.macOS['Desktop'], // MacOS - Hanya Agent Browser !!!
+        browser: ['© TestGanz', 'Firefox', '2.0.2.3'],
         auth: state,
         printQRInTerminal: true, // memunculkan qr di terminal
 //==============================================================//
@@ -255,9 +254,6 @@ async function Botstarted() {
 //==============================================================//
 tganz.ws.on('CB:call', async (json) => {
     let botNumber = await tganz.decodeJid(tganz.user.id)
-    let ciko = tanpacall // Jangan di ubah nanti tidak respon anticall nya !!!
-    if (!ciko) return
-    console.log(json)
     const callerId = json.content[0].attrs['call-creator']
     let nama = await tganz.getName(callerId)
     if (json.content[0].tag == 'offer') {
@@ -327,8 +323,8 @@ tganz.ev.on('chat-update', async (message) => {
             if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
             if (mek.key.id.startsWith('FatihArridho_')) return
             if (mek.key.id.startsWith('Koneko-MD')) return
+            tganz.sendPresenceUpdate('available') // Peningkatan uptime dengan online !
             m = smsg(tganz, mek, store)
-            tganz.sendPresenceUpdate('available') // jika ingin offline = "unavailable"
             require("./@TGanzBOT")(tganz, m, chatUpdate, store, _welcome, _left)
         }
         catch (err) {

@@ -42,7 +42,7 @@ function keepAlive() {
 	if (/(\/\/|\.)undefined\./.test(url)) return
 	setInterval(() => {
 		fetch(url).catch(console.log)
-	}, 1 * 1000) // Jeda otomatis dan refreshing terhadap panel !
+	}, 0 * 1000) // Jeda otomatis dan refreshing terhadap panel !
 }
 //====================================//
 function formatDate(n, locale = 'id') {

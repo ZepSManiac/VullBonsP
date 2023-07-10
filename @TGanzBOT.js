@@ -76,6 +76,7 @@ const { exec: execS } = require("child_process");
 const { exec, spawn, execSync } = require("child_process");
 const { sizeFormatter } = require('human-readable');
 const { UploadFileUgu, webp2mp4File } = require('./lib/uploader');
+const { jadianime } = require('jadianime-ts')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid, writeExif } = require('./lib/exif');
 const yts = require('./lib/yt-search');
 const { updateDatabase } = require('./lib/SistemWebp.js')
@@ -490,14 +491,13 @@ module.exports = tganz = async (tganz, m, chatUpdate, store, _welcome, _left) =>
         const from = m.chat
 	      const type = Object.keys(mek.message)[0]        
 	      const content = JSON.stringify(mek.message)
-        const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participant) : m.key.remoteJid
-        const senderNumber = sender.split('@')[0]
         const pushname = m.pushName || "No Name"
         const botNumber = await tganz.decodeJid(tganz.user.id)
         const tanggal = moment().tz("Asia/Jakarta").format("dddd, DD MMMM YYYY")
         const jam = moment(Date.now()).tz('Asia/Jakarta').locale('id').format('HH:mm:ss z')
         const salam = moment(Date.now()).tz("Asia/Jakarta").locale('id').format('a')
-        const isCreator = [botNumber, ...global.owner, '6289512696170@s.whatsapp.net'].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const sender = m.isGroup ? (mek.key.participant ? mek.key.participant : mek.participant) : mek.key.remoteJid
+        const isCreator = [tganz.user.id, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const itsMe = m.sender == botNumber ? true : false
         const arghh = command.split(' ')
         const text = q = args.join(" ")
@@ -909,7 +909,6 @@ let setting = global.db.data.settings[botNumber]
 	    if (setting) {
 	 if (!isNumber(setting.status)) setting.status = 0
 	              if (!('restartDB' in settings)) settings.restartDB = 0
-                if (!('tanpacall' in setting)) setting.tanpacall = true
                 if (!('autobio' in setting)) setting.autobio = false
                 if (!('autoread' in setting)) setting.autoread = true
                 if (!('modebot23' in setting)) setting.modebot23 = true
@@ -921,7 +920,6 @@ let setting = global.db.data.settings[botNumber]
             } else global.db.data.settings[botNumber] = {
                 status: 0,
                 restartDB: 0,
-                tanpacall: true,
                 autobio: false,
                 autoread: true,
                 modebot23: true,
@@ -1350,12 +1348,6 @@ tganz.readMessages(from, m.sender, [m.key.id])}
 if (autoreadsw) {
 		if (from === 'status@broadcast') {
 		tganz.chatRead(from)
-	}
-	}
-	       // auto read whatsapp status
-if (autoreadsw) {
-		if (from === 'status@broadcast') {
-		tganz.sendPresenceUpdate('available', from)
 	}
 	}
           // autoread gc chat
@@ -2821,7 +2813,7 @@ ${readmore}
 ╚════════════════❑
 
  ⫹⫺ *Tʀɪᴍᴀᴋᴀsɪʜ sᴜᴅᴀʜ ᴍᴇɴɢɢᴜɴᴀᴋᴀɴ ʙᴏᴛ ɪɴɪ* 😘`, m })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     } 
        break
@@ -3205,7 +3197,7 @@ ${readmore}
 ╚════════════════❑
 
  ⫹⫺ *Tʀɪᴍᴀᴋᴀsɪʜ sᴜᴅᴀʜ ᴍᴇɴɢɢᴜɴᴀᴋᴀɴ ʙᴏᴛ ɪɴɪ* 😘`})
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
             }
             break
@@ -3262,7 +3254,7 @@ ${readmore}
 ═════════════════❑
 ❑ Tᴏᴛᴀʟ ғɪᴛᴜʀ : ⟨ *${totalFitur()}* ⟩
 ═════════════════❑`, `LISTMENU 📖`, sections, m)
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
          }
             break
@@ -3313,7 +3305,7 @@ ${readmore}
 ┆❐ ${prefix}$ ⟨ Exec ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3345,7 +3337,7 @@ ${readmore}
 ┆❐ ${prefix}findmusic ⟨ Mengidentifikasi Nama Musik ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3381,7 +3373,7 @@ ${readmore}
 ┆❐ ${prefix}tupai
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3409,7 +3401,7 @@ ${readmore}
 ┆❐ ${prefix}simi ⟨ Alternatif Open-AI ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3476,7 +3468,7 @@ ${readmore}
 ┆❐ ${prefix}yuki 
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3510,7 +3502,7 @@ ${readmore}
 ┆❐ ${prefix}mediafire
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3600,7 +3592,7 @@ ${readmore}
 ┆❐ ${prefix}wallas ⟨ Asthetic ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3688,7 +3680,7 @@ ${readmore}
 ┆❐ ${prefix}leaves
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3738,7 +3730,7 @@ ${readmore}
 ┆❐ ${prefix}zodiak
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3783,7 +3775,7 @@ ${readmore}
 ┆❐ ${prefix}mangayutri
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -3896,7 +3888,7 @@ ${readmore}
 ┆❐ ${prefix}tts ⟨ Ubah Teks Menjadi Suara ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4078,7 +4070,7 @@ ${readmore}
 ┆❐ ${prefix}sound161
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4249,7 +4241,7 @@ ${readmore}
 ┆❐ ${prefix}yellow-jewelry
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4319,7 +4311,7 @@ ${readmore}
 ┆❐ ${prefix}text-8bit
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4378,7 +4370,7 @@ ${readmore}
 ┆❐ ${prefix}zettai
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4408,7 +4400,7 @@ ${readmore}
 ┆❐ ${prefix}alquranaudio
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4439,7 +4431,7 @@ ${readmore}
 ┆❐ ${prefix}vietnam
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4522,7 +4514,7 @@ ${readmore}
 ┆❐ ${prefix}tyni
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4593,7 +4585,7 @@ ${readmore}
 ┆❐ ${prefix}antipromosi ⟨ Pencegah Promosi Panel ⟩
 ╰────────────◇`
       })
-   const devsound = fs.readFileSync('./Media/yamete.mp3')
+   const devsound = fs.readFileSync('./Media/menu.mp3')
   tganz.sendMessage(m.chat, { audio: devsound, mimetype: 'audio/mp4', ptt: true, quoted: m })
     }
        break
@@ -4675,17 +4667,7 @@ case 'wallpaper': {
 		let { wallpaper } = require('./lib/scraper')
                 anu = await wallpaper(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
-		let buttons = [
-                    {buttonId: `.isoa ${text}`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result.image[0] },
-                    caption: `⌈ *Hᴀsɪʟ Pᴇɴᴄᴀʀɪᴀɴ* ⌋\n⭔ *❑ Jᴜᴅᴜʟ :* ⟨ ${text} ⟩\n⭔ *❑ Kᴀᴛᴇɢᴏʀɪ :* ${result.type}\n⭔ *❑ Dᴇᴛᴀɪʟ :* ${result.source}\n⭔ *❑ Lɪɴᴋ Gᴀᴍʙᴀʀ :* ${result.image[2] || result.image[1] || result.image[0]}\n\n⌘ ᴋʟɪᴋ ʟᴀɴᴊᴜᴛ ᴜɴᴛᴜᴋ ᴍᴇɴᴄᴀʀɪ ᴡᴀʟʟᴘᴀᴘᴇʀ ⟨ *${text}* ⟩`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url : result.image[0] }, caption: `⌈ *Hᴀsɪʟ Pᴇɴᴄᴀʀɪᴀɴ* ⌋\n⭔ *❑ Jᴜᴅᴜʟ :* ⟨ ${text} ⟩\n⭔ *❑ Kᴀᴛᴇɢᴏʀɪ :* ${result.type}\n⭔ *❑ Dᴇᴛᴀɪʟ :* ${result.source}\n⭔ *❑ Lɪɴᴋ Gᴀᴍʙᴀʀ :* ${result.image[2] || result.image[1] || result.image[0]}\n\n⌘ ᴋʟɪᴋ ʟᴀɴᴊᴜᴛ ᴜɴᴛᴜᴋ ᴍᴇɴᴄᴀʀɪ ᴡᴀʟʟᴘᴀᴘᴇʀ ⟨ *${text}* ⟩` }, { quoted: m } )
             }
             break
 case 'asupanghea':
@@ -4913,38 +4895,13 @@ tganz.sendMessage(m.chat, { audio: { url: asly.data.url }, mimetype: 'audio/mpeg
             case 'playy':
             case 'play': {
             if (isBan) return reply(mess.ban)
-                if (!text) return reply(`Kᴇᴛɪᴋ Pᴇʀɪɴᴛᴀʜ :\n${prefix+command} judul lagu\n\nContoh penggunaan:\n${prefix+command} Lagu Surat cinta untuk starla`)
-                //if (isUrl(text)) return reply(`Kᴇᴛɪᴋ Pᴇʀɪɴᴛᴀʜ :\n${prefix+command} judul lagu\n\nContoh penggunaan:\n${prefix+command} Lagu Surat cinta untuk starla`)
-                reply(mess.wait)
-                let yts = require("yt-search")
-                let search = await yts(text)
-                let anu = search.videos[Math.floor(Math.random() * search.videos.length)]
-                let buttons = [
-                    {buttonId: `.ytmp3 ${anu.url}`, buttonText: {displayText: '🎧 Audio'}, type: 1},
-                    {buttonId: `.ytmp4 ${anu.url}`, buttonText: {displayText: 'Video 🎦'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: anu.thumbnail },
-                    caption: `
-    「 *INFO SEARCH* 」
-                    
-  Mᴇᴛᴏᴅᴇ : Pᴇɴᴄᴀʀɪᴀɴ Mᴏᴅᴇʀɴ
-  ID : ${anu.videoId}
-  Jᴜᴅᴜʟ : ${anu.title}
-  Pᴇɴᴄɪᴘᴛᴀ : ${anu.author.name}
-  Cʜᴀɴɴᴇʟ : ${anu.author.url}
-  Dᴜʀᴀsɪ : ${anu.timestamp}
-  Pᴇɴᴏɴᴛᴏɴ : ${anu.views}
-  Uᴘʟᴏᴀᴅ Pᴀᴅᴀ : ${anu.ago}
-  Lɪɴᴋ Vɪᴅᴇᴏ : ${anu.url}
-  
-  Dᴇsᴋʀɪᴘsɪ : ${anu.description}`,
-
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-        tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+			if (!text) return await newReply(`Kᴇᴛɪᴋ Pᴇʀɪɴᴛᴀʜ :\n${prefix+command} judul lagu\n\nContoh penggunaan:\n${prefix+command} Lagu Surat cinta untuk starla`)
+            reply(mess.wait)
+            let yts = require("yt-search")
+            let search = await yts(text)
+            for (let i of search.all) {
+            let asly = await fetchJson(`https://yt.nxr.my.id/yt2?url=${i.url}&type=audio`)}
+				   	tganz.sendMessage(m.chat, { audio: { url: asly.data.url }, mimetype: 'audio/mp4', fileName: `${asly.title}.mp3`, ptt: true })
          }
             break
             case 'yts':
@@ -5358,7 +5315,7 @@ m.reply('*Mᴀᴀғ ᴛɪᴅᴀᴋ ᴅᴀᴘᴀᴛ ᴍᴇɴᴅᴏᴡɴʟᴏᴀ�
             for (let i of banned) {
                 teksooo += `\n╠☞ ⟨ wa.me/${i} ⟩`
             }
-            teksooo += `\n╚════════════════════❑\n\n❑ Tᴏᴛᴀʟ ᴘᴇɴɢɢᴜɴᴀ ʙᴀɴ : ⟨ *${banned.length}* ⟩ !!!*`
+            teksooo += `\n╚════════════════════❑\n\n❑ Tᴏᴛᴀʟ ᴘᴇɴɢɢᴜɴᴀ ʙᴀɴ : ⟨ *${banned.length}* ⟩`
             tganz.sendMessage(m.chat, { text: teksooo.trim() }, 'extendedTextMessage', { quoted: m, contextInfo: { "mentionedJid": banned } })
            }
              break
@@ -6071,16 +6028,7 @@ case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': ca
          		     let { quotesAnime } = require('./lib/scraper')
                 let anu = await quotesAnime()
                 result = anu[Math.floor(Math.random() * anu.length)]
-                let buttons = [
-                    {buttonId: `.aoejdk`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    text: `~ Qᴜᴏᴛᴇs Aɴɪᴍᴇ ⸙\n⊙════════════════════⊙\n*◈ ${result.quotes}*\n⊙════════════════════⊙\n\n⫹⫺ Pᴇɴᴄɪᴘᴛᴀ : *'${result.karakter}', ${result.anime}*\n⫹⫺ Cᴇʀɪᴛᴀ ɪɴɪ ᴅɪ ᴘᴜʙʟɪᴋ ᴘᴀᴅᴀ :\n*☞ ${result.up_at}*`,
-                    footer: '*❑ ᴋʟɪᴋ ʟᴀɴᴊᴜᴛ ᴜɴᴛᴜᴋ ᴍᴇʟɪʜᴀᴛ ϙᴜᴏᴛᴇs ʟᴀɪɴɴʏᴀ*',
-                    buttons: buttons,
-                    headerType: 2
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendText(m.chat, `\n~ Qᴜᴏᴛᴇs Aɴɪᴍᴇ ⸙\n⊙════════════════════⊙\n*◈ ${result.quotes}*\n⊙════════════════════⊙\n\n⫹⫺ Pᴇɴᴄɪᴘᴛᴀ : *'${result.karakter}', ${result.anime}*\n⫹⫺ Cᴇʀɪᴛᴀ ɪɴɪ ᴅɪ ᴘᴜʙʟɪᴋ ᴘᴀᴅᴀ :\n*☞ ${result.up_at}*\n`, m)
             }
             break
             case 'anonymous2': {
@@ -6179,17 +6127,7 @@ case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': ca
                 let { wikimedia } = require('./lib/scraper')
                 anu = await wikimedia(text)
                 result = anu[Math.floor(Math.random() * anu.length)]
-                let buttons = [
-                    {buttonId: `.wiki ${text}`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result.image },
-                    caption: `⭔ ❑ *Jᴜᴅᴜʟ* : ${result.title}\n⭔ ❑ *Sᴜᴍʙᴇʀ* : ${result.source}\n⭔ ❑ *Lɪɴᴋ Gᴀᴍʙᴀʀ* : ${result.image}`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url : result.image }, caption: `⭔ ❑ *Jᴜᴅᴜʟ* : ${result.title}\n⭔ ❑ *Sᴜᴍʙᴇʀ* : ${result.source}\n⭔ ❑ *Lɪɴᴋ Gᴀᴍʙᴀʀ* : ${result.image}`}, { quoted: m } )
             }
             break
             case 'tinyurl': {
@@ -7165,7 +7103,7 @@ break
              case 'publik':
              case 'public': {
             if (isBan) return reply(mess.ban)
-        if (!isCreator) return m.reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ ᴏᴡɴᴇʀᴋᴜ !')
+        if (!isCreator) return m.reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ ᴏᴡɴᴇʀᴋᴜ !')
         db.data.settings[botNumber].modebot23 = true
         m.reply('Sᴜᴋsᴇs ᴍᴇɴɢᴜʙᴀʜ ʙᴏᴛ ᴍᴇɴᴊᴀᴅɪ ᴍᴏᴅᴇ Pᴜʙʟɪᴋ !\n\n*© TᴇsᴛGᴀɴᴢ*')
         }
@@ -7173,7 +7111,7 @@ break
              case 'sendiri':
              case 'self': {
             if (isBan) return reply(mess.ban)
-        if (!isCreator) return m.reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ ᴏᴡɴᴇʀᴋᴜ !')
+        if (!isCreator) return m.reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ ᴏᴡɴᴇʀᴋᴜ !')
         db.data.settings[botNumber].modebot23 = false
         m.reply('Sᴜᴋsᴇs ᴍᴇɴɢᴜʙᴀʜ ʙᴏᴛ ᴍᴇɴᴊᴀᴅɪ ᴍᴏᴅᴇ Pʀɪʙᴀᴅɪ !\n\n*© TᴇsᴛGᴀɴᴢ*')
         }
@@ -7182,18 +7120,19 @@ break
            case 'mode': {
       if (isBan) return m.reply(mess.ban)
       if (!isCreator) return m.reply(mess.owner)
-      if (args[0] === 'on') {
+      if (args[0] === 'self') {
       db.data.settings[botNumber].modebot23 = true // Pribadi !
       m.reply('*Sᴇʟᴇsᴀɪ, sᴇᴋᴀʀᴀɴɢ ʙᴏᴛ ᴍᴇɴᴊᴀᴅɪ ᴍᴏᴅᴇ ᴘʀɪʙᴀᴅɪ sᴇʙᴀɢᴀɪᴍᴀɴᴀ ʜᴀɴʏᴀ ᴏᴡɴᴇʀ/ᴘᴇɴᴄɪᴘᴛᴀ ʏᴀɴɢ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɢᴜɴᴀᴋᴀɴɴʏᴀ !!!*')
-      } else if (args[0] === 'off') {
+      } else if (args[0] === 'public') {
       db.data.settings[botNumber].modebot23 = false // Semua !
       m.reply('*Sᴇʟᴇsᴀɪ, sᴇᴋᴀʀᴀɴɢ ʙᴏᴛ ᴍᴇɴᴊᴀᴅɪ ᴍᴏᴅᴇ ᴘᴜʙʟɪᴋ ᴅᴀɴ ʙɪsᴀ ᴅɪ ᴀᴋsᴇs ᴅɪ sᴇᴍᴜᴀ ᴍᴇᴍʙᴇʀ ᴍᴀᴜᴘᴜɴ ᴘᴇɴɢɢᴜɴᴀ ʟᴀɪɴ !!!*')
       } else {
-      let buttonsntilink = [
-  { buttonId: `.${command} off`, buttonText: { displayText: '👤 SELF' }, type: 1 },
-  { buttonId: `.${command} on`, buttonText: { displayText: 'PUBLIC 👥' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ᴍᴏᴅᴇ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ, sᴇʟғ = sᴇɴᴅɪʀɪ / ᴘᴜʙʟɪᴋ = sᴇᴍᴜᴀ ᴏʀᴀɴɢ !!!*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *sᴇʟғ* ⟨ Mode Hanya Owner ⟩
+❏ ${command} *ᴘᴜʙʟɪᴄ* ⟨ Mode Semua Orang ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴏᴡɴᴇʀ !!!*\n`, m)
   }
   }
        break
@@ -8041,12 +7980,12 @@ break
                 } else if (args[0] === 'open'){
                     await tganz.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`*Sᴜᴋsᴇs, Mᴜʟᴀɪ sᴇᴋᴀʀᴀɴɢ sᴇᴍᴜᴀ ᴍᴇᴍʙᴇʀ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɪʀɪᴍ ᴘᴇsᴀɴ ᴅɪ ɢʀᴜᴘ ɪɴɪ !!!*`)).catch((err) => reply(mess.error))
                 } else {
-                let buttons = [
-                        { buttonId: '.group buka', buttonText: { displayText: '⚔️ Bᴜᴋᴀ' }, type: 1 },
-                        { buttonId: '.group tutup', buttonText: { displayText: 'Tᴜᴛᴜᴘ 🛡️' }, type: 1 }
-                    ]
-                    await tganz.sendButtonText(m.chat, buttons, `*⫹⫺ Pɪʟɪʜ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ʙᴜᴋᴀ ᴀᴛᴀᴜ ᴛᴜᴛᴜᴘ ɢʀᴜᴘ !*`, footer_text, m)
+           await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
 
+❏ ${command} *ʙᴜᴋᴀ* ⟨ Pembukaan Chattingan Grup ⟩
+❏ ${command} *ᴛᴜᴛᴜᴘ* ⟨ Penutupan Chattingan Grup ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
              }
             }
             break
@@ -8307,11 +8246,12 @@ break
       global.antitags = false
       m.reply('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪ-ᴛᴀɢ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
       } else {
-      let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴏᴡɴᴇʀ !!!*\n`, m)
   }
   }
        break
@@ -8336,11 +8276,12 @@ if (!db.data.chats[m.chat].antilink) return reply('Sᴜᴅᴀʜ Oғғ Kᴀᴋ !'
 db.data.chats[m.chat].antilink = false
 reply('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
      break
@@ -8365,11 +8306,12 @@ if (!db.data.chats[m.chat].antilinkall) return reply('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinkall = false
 reply('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋᴀʟʟ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8395,11 +8337,12 @@ if (!db.data.chats[m.chat].antiwame) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ !
 db.data.chats[m.chat].antiwame = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪᴡᴀᴍᴇ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntwame = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntwame, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8424,11 +8367,12 @@ if (!db.data.chats[m.chat].antilinkvid) return replay('Sᴜᴅᴀʜ Oғғ Kᴀ�
 db.data.chats[m.chat].antilinkvid = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ʏᴏᴜᴛᴜʙᴇ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8453,11 +8397,12 @@ if (!db.data.chats[m.chat].antilinkch) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinkch = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ᴄʜᴀɴɴᴇʟ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8482,11 +8427,12 @@ if (!db.data.chats[m.chat].antilinkig) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinkig = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-Iɴsᴛᴀɢʀᴀᴍ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8511,11 +8457,12 @@ if (!db.data.chats[m.chat].antilinkfb) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinkfb = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ғᴀᴄᴇʙᴏᴏᴋ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8540,11 +8487,12 @@ if (!db.data.chats[m.chat].antilinktg) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinktg = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ᴛᴇʟᴇɢʀᴀᴍ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8569,11 +8517,12 @@ if (!db.data.chats[m.chat].antilinktt) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antilinktt = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ᴛɪᴋᴛᴏᴋ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8598,11 +8547,12 @@ if (!db.data.chats[m.chat].antilinktwt) return replay('Sᴜᴅᴀʜ Oғғ Kᴀ�
 db.data.chats[m.chat].antilinktwt = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪʟɪɴᴋ-ᴛᴡɪᴛᴛᴇʀ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8627,11 +8577,12 @@ if (!db.data.chats[m.chat].antivirtex) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ
 db.data.chats[m.chat].antivirtex = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪ-ᴠɪʀᴇx sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntvirtex = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntvirtex, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8656,11 +8607,12 @@ if (!db.data.chats[m.chat].antipanel) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ 
 db.data.chats[m.chat].antipanel = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀɴᴛɪ ᴘʀᴏᴍᴏsɪ ᴘᴀɴᴇʟ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8685,11 +8637,12 @@ if (!db.data.chats[m.chat].autoai) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ !')
 db.data.chats[m.chat].autoai = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀᴜᴛᴏ-ᴀɪ ɢʀᴜᴘ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8736,11 +8689,12 @@ if (!db.data.chats[m.chat].autosimi) return replay('Sᴜᴅᴀʜ Oғғ Kᴀᴋ !
 db.data.chats[m.chat].autosimi = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀᴜᴛᴏ-sɪᴍɪ ɢʀᴜᴘ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -8765,11 +8719,12 @@ if (!db.data.chats[m.chat].autosticker) return replay('Sᴜᴅᴀʜ Oғғ Kᴀ�
 db.data.chats[m.chat].autosticker = false
 replay('Sᴇʟᴇsᴀɪ. Fɪᴛᴜʀ ᴀᴜᴛᴏ-sᴛɪᴄᴋᴇʀ ɢʀᴜᴘ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsntilink = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsntilink, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -9339,16 +9294,14 @@ break
 	            case 'toanime': 
 	            case 'jadianime':  {
             if (isBan) return reply(mess.ban)
-              if (!isMedia) return reply(`◈ Fᴏᴛᴏɴʏᴀ ᴍᴀɴᴀ ᴋᴀᴋ ?\n*⫹⫺ Cᴏɴᴛᴏʜ Pᴇɴɢɢᴜɴᴀᴀɴ : ${prefix + command} <Bᴀʟᴀs Gᴀᴍʙᴀʀ Wᴀᴊᴀʜ>*`)
-              if (/webp/.test(mime)) return reply(`◈ Fᴏᴛᴏɴʏᴀ ᴍᴀɴᴀ ᴋᴀᴋ ?\n*⫹⫺ Cᴏɴᴛᴏʜ Pᴇɴɢɢᴜɴᴀᴀɴ : ${prefix + command} <Bᴀʟᴀs Gᴀᴍʙᴀʀ Wᴀᴊᴀʜ>*`)
+             if (!quoted) return reply(`◈ Fᴏᴛᴏɴʏᴀ ᴍᴀɴᴀ ᴋᴀᴋ ?\n*⫹⫺ Cᴏɴᴛᴏʜ Pᴇɴɢɢᴜɴᴀᴀɴ : ${prefix + command} <Bᴀʟᴀs Gᴀᴍʙᴀʀ Wᴀᴊᴀʜ>*`)
+             if (!/image/.test(mime)) return reply(`◈ Fᴏᴛᴏɴʏᴀ ᴍᴀɴᴀ ᴋᴀᴋ ?\n*⫹⫺ Cᴏɴᴛᴏʜ Pᴇɴɢɢᴜɴᴀᴀɴ : ${prefix + command} <Bᴀʟᴀs Gᴀᴍʙᴀʀ Wᴀᴊᴀʜ>*`)
                 m.reply(`_⌛ Tᴜɴɢɢᴜ sᴇʙᴇɴᴛᴀʀ ʏᴀ ᴋᴀᴋ..._\n\n❑ 𝗝𝗶𝗸𝗮 𝗴𝗮𝗺𝗯𝗮𝗿 𝗵𝗮𝘀𝗶𝗹 𝗷𝗮𝗱𝗶𝗮𝗻𝗶𝗺𝗲 𝗯𝗲𝗹𝘂𝗺 𝗱𝗶 𝗸𝗶𝗿𝗶𝗺, 𝗔𝗱𝗮 𝗸𝗲𝗺𝘂𝗻𝗴𝗸𝗶𝗻𝗮𝗻 𝗯𝗮𝗵𝘄𝗮 𝗳𝗼𝘁𝗼 𝘆𝗮𝗻𝗴 𝗸𝗮𝗸𝗮𝗸 𝗸𝗶𝗿𝗶𝗺/𝗯𝗮𝗹𝗮𝘀 𝘁𝗲𝗿𝗵𝗮𝗹𝗮𝗻𝗴 𝗳𝗶𝗹𝘁𝗲𝗿 𝗺𝗮𝘂𝗽𝘂𝗻 𝗲𝗺𝗼𝗷𝗶/𝗲𝗺𝗼𝘁. 𝗨𝘁𝗮𝗺𝗮𝗸𝗮𝗻 𝘁𝗶𝗱𝗮𝗸 𝗺𝗲𝗺𝗮𝗸𝗮𝗶 𝗳𝗶𝗹𝘁𝗲𝗿/𝗲𝗺𝗼𝘁 𝘆𝗮 𝗸𝗮𝗸 !!!`)
-           const media23 = await tganz.downloadAndSaveMediaMessage(quoted)
-           const anu = await TelegraPH(media23)
-           let hasilanime = await fetchJson(`https://api.lolhuman.xyz/api/imagetoanime?apikey=${lolkeysapi}&img=${anu}`)
-       // tganz.sendMessage(m.chat, { image: { url: `https://api.lolhuman.xyz/api/imagetoanime?apikey=${lolkeysapi}&img=${anu}` }, caption: mess.done }, { quoted: m})
-	   		let proses = await remini(hasilanime, "enhance");
-   			tganz.sendMessage(m.chat, { image: proses, caption: mess.done }, { quoted: m})
-	  		await sleep(5000) // Semakin lama waktu yang di tunggu semakin baik hasilnya !!!
+             let media = await tganz.downloadAndSaveMediaMessage(quoted)
+             res = await TelegraPH(media)
+             anu = jadianime.JadiAnime(`${res}`).then( res => {
+             tganz.sendMessage(m.chat, { image: { url: res.img }, caption: mess.done }, { quoted: m })
+            }) 
 	     		}
              break
              case 'unblokir':
@@ -10396,7 +10349,7 @@ break
             let member = participants.map(u => u.id)
             let orang = member[Math.floor(Math.random() * member.length)]
             let jodoh = member[Math.floor(Math.random() * member.length)]
-            let jawab = `💗 𝗖𝗶𝗲𝗲 𝘆𝗮𝗻𝗴 𝗷𝗮𝗱𝗶𝗮𝗻 𝗷𝗮𝗻𝗴𝗮𝗻 𝗹𝘂𝗽𝗮 𝗣𝗝 ( 𝗣𝗮𝗷𝗮𝗸 𝗝𝗮𝗱𝗶𝗮𝗻 ), 𝗝𝗮𝗻𝗴𝗮𝗻 𝗯𝗮𝗻𝘆𝗮𝗸 - 𝗯𝗮𝗻𝘆𝗮𝗸. 𝗥𝗽 𝟭 𝗝𝘂𝘁𝗮 𝗮𝗷𝗮 𝗺𝘂𝗿𝗮𝗵 𝗸𝗼𝗸 🗿🙏🏻
+            let jawab = `*💗 Cɪᴇ ʏᴀɴɢ ᴊᴀᴅɪᴀɴ ᴊᴀɴɢᴀɴ ʟᴜᴘᴀ PJ ( Pᴀᴊᴀᴋ Jᴀᴅɪᴀɴ ), Jᴀɴɢᴀɴ ʙᴀɴʏᴀᴋ². Rᴘ 1 ᴊᴜᴛᴀ ᴀᴊᴀ ᴍᴜʀᴀʜ ᴋᴏᴋ 🗿🙏🏻*
             
 ╔═══════⟨ *Yᴀɴɢ - Jᴀᴅɪᴀɴ* ⟩════════⊙
 ╠☞ @${orang.split('@')[0]} ❤️ @${jodoh.split('@')[0]}
@@ -10404,10 +10357,7 @@ break
             
 ⫹⫺ Jᴀɴɢᴀɴ ʟᴜᴘᴀ PJɴʏᴀ !!!`
             let menst = [orang, jodoh]
-            let buttons = [
-                        { buttonId: '.jadian', buttonText: { displayText: '💗 Jᴀᴅɪᴀɴ 💗' }, type: 1 }
-                    ]
-                    await tganz.sendButtonText(m.chat, buttons, jawab, footer_text, m, {mentions: menst})
+      await tganz.sendMessage(m.chat, { text: jawab }, {quoted: m}, {mentions: menst})
             }
             break
             case 'randomquran2': {
@@ -10569,18 +10519,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/ahegao.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.ahegao`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'ass': {
@@ -10588,18 +10528,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/ass.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.ass`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'bdsm': {
@@ -10607,18 +10537,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/bdsm.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.bdsm`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)] 
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'blowjob': {
@@ -10626,18 +10546,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/blowjob.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.blowjob`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]  
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'cukold': {
@@ -10645,18 +10555,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/cukold.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.cukold`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]              
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'cum': {
@@ -10665,17 +10565,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/cum.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.cum`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'femdom': {
@@ -10683,18 +10573,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/femdom.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.femdom`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]          
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'foot': {
@@ -10702,18 +10582,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/foot.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.foot`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]        
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'gangbang': {
@@ -10721,18 +10591,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/gangbang.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.gangbang`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]              
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'gifs': {
@@ -10741,17 +10601,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/gifs.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.gifs`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'glasses': {
@@ -10759,18 +10609,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/glasses.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.glasses`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]              
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'hentai': {
@@ -10779,17 +10619,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/hentai.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.hentai`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'porno': case 'porn': case 'bokep': {
@@ -10806,18 +10636,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/manga.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.manga`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]         
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'masturbation': {
@@ -10826,17 +10646,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/masturbation.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.masturbation`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'megumin': {
@@ -10844,18 +10654,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/megumin.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.megumin`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]         
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'neko': {
@@ -10863,18 +10663,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/neko.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.neko`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]       
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'nekop': {
@@ -10882,18 +10672,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/neko2.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.nekop`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]       
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'nekonime':
@@ -10902,18 +10682,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/nekonime.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.nekonime`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]          
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'nadadering': 
@@ -10935,17 +10705,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/orgy.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.orgy`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'findermusic':
@@ -10988,18 +10748,8 @@ break
                 if (!isCreator) return m.reply(mess.owner)
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/panties.json`)
-                result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.panties`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                result = anu[Math.floor(Math.random() * anu.length)]       
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'tentacles': {
@@ -11008,17 +10758,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/tentacles.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.tentacles`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'thighs': {
@@ -11027,17 +10767,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/thighs.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.thighs`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'zettai': {
@@ -11046,17 +10776,7 @@ break
                 m.reply(mess.wait)
                 let anu = await fetchJson(`https://raw.githubusercontent.com/Abuzzpoet/Databasee/main/nsfw/zettai.json`)
                 result = anu[Math.floor(Math.random() * anu.length)]               
-                let buttons = [                   
-                    {buttonId: `.zettai`, buttonText: {displayText: 'LANJUT ⌲'}, type: 1}
-                ]
-                let buttonMessage = {
-                    image: { url: result },
-                    caption: `*◈ Jᴀɴɢᴀɴ ᴅɪɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*`,
-                    footer: footer_text,
-                    buttons: buttons,
-                    headerType: 4
-                }
-                tganz.sendMessage(m.chat, buttonMessage, { quoted: m })
+                tganz.sendMessage(m.chat, { image: { url: result }, caption: `*◈ Jᴀɴɢᴀɴ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴜɴᴛᴜᴋ ʏᴀɴɢ ᴛɪᴅᴀᴋ ʙᴀɪᴋ ʏᴀ ᴋᴀᴋ 😏*` }, { quoted: m })
             }
             break
             case 'simisimi':
@@ -11743,11 +11463,12 @@ break
                 db.data.chats[m.chat].mute = false
                 m.reply(`Bᴇʀʜᴀsɪʟ, Gʀᴜᴘ ᴛɪᴅᴀᴋ ʟᴀɢɪ ᴅɪ ʜᴇɴɪɴɢᴋᴀɴ ᴏʟᴇʜ ⟨ *${tganz.user.name}* ⟩`)
                 } else {
-                 let buttons = [
-                        { buttonId: '.mute on', buttonText: { displayText: '🛡️ ON' }, type: 1 },
-                        { buttonId: '.mute off', buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-                    ]
-                    await tganz.sendButtonText(m.chat, buttons, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+ await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
                 }
             }
              break
@@ -11769,11 +11490,12 @@ _welcome.splice(anu, 1)
 fs.writeFileSync('./database/welcome.json', JSON.stringify(_welcome, null, 2))
 reply('Fɪᴛᴜʀ ᴘᴇɴʏᴀᴍʙᴜᴛᴀɴ sᴇʟᴀᴍᴀᴛ ᴅᴀᴛᴀɴɢ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonswlcm = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonswlcm, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -11825,11 +11547,12 @@ _left.splice(anu, 1)
 fs.writeFileSync('./database/welcome.json', JSON.stringify(_left, null, 2))
 reply('Fɪᴛᴜʀ ᴘᴇɴʏᴀᴍʙᴜᴛᴀɴ sᴇʟᴀᴍᴀᴛ ᴛɪɴɢɢᴀʟ sᴜᴅᴀʜ ᴅɪ ᴍᴀᴛɪᴋᴀɴ !')
 } else {
-  let buttonsleft = [
-  { buttonId: `.${command} on`, buttonText: { displayText: '🛡️ ON' }, type: 1 },
-  { buttonId: `.${command} off`, buttonText: { displayText: 'OFF 🐾' }, type: 1 }
-  ]
-  await tganz.sendButtonText(m.chat, buttonsleft, `*❑ Pɪʟɪʜ ʙᴜᴛᴛᴏɴ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪғᴋᴀɴ ᴀᴛᴀᴜ ᴍᴇᴍᴀᴛɪᴋᴀɴ ғɪᴛᴜʀ ${command} !*`, footer_text, m)
+await tganz.sendText(m.chat, `\n⫹⫺ Sɪʟᴀʜᴋᴀɴ ᴋᴇᴛɪᴋ ᴅɪ ʙᴀᴡᴀʜ ɪɴɪ :
+
+❏ ${command} *ᴏɴ* ⟨ Mengaktifkan ⟩
+❏ ${command} *ᴏғғ* ⟨ Menonaktifkan ⟩
+
+*⫹⫺ Hᴀɴʏᴀ ʙᴇʀʟᴀᴋᴜ ᴜɴᴛᴜᴋ ᴀᴅᴍɪɴ !!!*\n`, m)
   }
   }
   break
@@ -11853,8 +11576,8 @@ ${result.lyrics}
             break
             case 'buka': {
                if (isBan) return reply(mess.ban)
-                if (!m.isGroup) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz')
-                if (!isAdmins) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !')
+                if (!m.isGroup) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz')
+                if (!isAdmins) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !')
                 if (!isBotAdmins) return reply("Hᴀɪ ᴋᴀᴋ, Uɴᴛᴜᴋ ᴍᴇɴɢɢᴜɴᴀᴋᴀɴ ғɪᴛᴜʀ ɪɴɪ ᴊᴀᴅɪᴋᴀɴ ᴀᴋᴜ Aᴅᴍɪɴ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !")
                 tganz.groupSettingUpdate(m.chat, 'not_announcement')
                 reply(`Sᴜᴋsᴇs ᴍᴇɴɢɪᴢɪɴᴋᴀɴ sᴇᴍᴜᴀ Pᴇsᴇʀᴛᴀ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɪʀɪᴍ ᴘᴇsᴀɴ ᴋᴇ ɢʀᴜᴘ ɪɴɪ !`)
@@ -11994,8 +11717,8 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case 'close':
             case 'tutup': {
             if (isBan) return reply(mess.ban)
-                if (!m.isGroup) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz')
-                if (!isAdmins) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !')
+                if (!m.isGroup) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz')
+                if (!isAdmins) return reply('Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !')
                 if (!isBotAdmins) return reply("Hᴀɪ ᴋᴀᴋ, Uɴᴛᴜᴋ ᴍᴇɴɢɢᴜɴᴀᴋᴀɴ ғɪᴛᴜʀ ɪɴɪ ᴊᴀᴅɪᴋᴀɴ ᴀᴋᴜ Aᴅᴍɪɴ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !")
                 tganz.groupSettingUpdate(m.chat, 'announcement')
                 reply(`Sᴜᴋsᴇs ᴍᴜʟᴀɪ sᴇᴋᴀʀᴀɴɢ ʜᴀɴʏᴀ ᴀᴅᴍɪɴ ʏᴀɴɢ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɪʀɪᴍ ᴘᴇsᴀɴ ᴋᴇ ɢʀᴜᴘ ɪɴɪ !`)
@@ -12004,13 +11727,11 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case 'tgme': 
             case 'tagme': {
             if (isBan) return reply(mess.ban)
-            if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
+            if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
             let me = m.sender
-            let jawab = `*@${me.split('@')[0]}*`
-            let ments = [me]
-            let buttons = [{ buttonId: '.menu', buttonText: { displayText: '⚙️ MENU ⚙️' }, type: 1 }]
+            let jawab = `\n*@${me.split('@')[0]}*\n`
             tganz.sendMessage(m.chat, {react: {text: kloadq,key: m.key}})
-            await tganz.sendButtonText(m.chat, buttons, jawab, footer_text, m, {mentions: ments, quoted: m})
+            tganz.sendText(m.chat, `${jawab}`, m)
             }
             break
             case 'tagsemua':
@@ -12019,9 +11740,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case 'tegall':
             case 'tagall': {
             if (isBan) return reply(mess.ban)
-                if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
+                if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
                 if (!isBotAdmins) return reply(mess.botAdmin)
-                if (!(isAdmins || isCreator)) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !")
+                if (!(isAdmins || isCreator)) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !")
             let hehe = '╔══✪〘 *Tᴀɢ - Sᴇᴍᴜᴀ* 〙✪═══\n'
             for (let mem of participants) {
                 hehe += `╠➥ @${mem.id.split('@')[0]}\n`
@@ -12051,9 +11772,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case 'hidetag': {
             if (isBan) return reply(mess.ban)
                if (!quoted) return reply(`*Tᴇᴋsɴʏᴀ ᴍᴀɴᴀ ᴋᴀᴋ ?*`)
-                if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
+                if (!m.isGroup) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ʙɪsᴀ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴅɪ ᴅᴀʟᴀᴍ ɢʀᴜᴘ. Sɪʟᴀʜᴋᴀɴ ᴍᴀsᴜᴋ ɢʀᴜᴘᴋᴜ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ !\n\nʟɪɴᴋ ɢʀᴜᴘ :\nhttps://chat.whatsapp.com/BtryPpkWIKgBEqtYMKjnpz")
                 if (!isBotAdmins) return reply(mess.botAdmin)
-                if (!(isAdmins || isCreator)) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !")
+                if (!(isAdmins || isCreator)) return reply("Hᴀɪ ᴋᴀᴋ, Fɪᴛᴜʀ ɪɴɪ ʜᴀɴʏᴀ ᴅᴀᴘᴀᴛ ᴅɪ ɢᴜɴᴀᴋᴀɴ ᴏʟᴇʜ Aᴅᴍɪɴ ɢʀᴜᴘ ɪɴɪ ʏᴀ ᴋᴀᴋ !")
                 let tek = m.quoted ? quoted.text : (text ? text : "")
                 tganz.sendMessage(m.chat, {
                     text: tek,
